@@ -1,19 +1,34 @@
 # `queue`s and threads
 author: null
+
 levels:
+
   - advanced
+
   - beginner
+
 type: normal
+
 category: how to
+
 tags: []
+
 parent: 56c5e928bc623a0600ff36fd
+
 inAlgoPool: true
+
 links:
+
   - nature: website
+
     name: docs.python.org
+
     url: 'https://docs.python.org/3.5/library/stdtypes.html#memory-views'
+
   - nature: website
+
     name: www.troyfawkes.com
+
     url: 'http://www.troyfawkes.com/learn-python-multithreading-queues-basics/'
 
 ---

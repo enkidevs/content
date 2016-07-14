@@ -9,7 +9,8 @@ tags: []
 inAlgoPool: false
 
 ---
-content
+## Content
+
 When you request data over the internet, the traffic doesn't flow directly between your machine and the machine you're requesting data from.  Rather, the traffic makes a sequence of "hops" between many machines along the way.  The specific route the traffic takes can vary from request to request.  The failure of any link in this chain might cause your internet connection to appear slow or unreliable.
 
 To see all the "hops" between your machine and some remote machine we can use the `traceroute` command.  Here is an example of the output:

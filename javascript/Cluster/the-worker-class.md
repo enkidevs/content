@@ -1,7 +1,7 @@
 # The Worker Class
 author: Tom Marshall
 
-levels: foobar
+levels: foobaryo
 
 type: normal
 

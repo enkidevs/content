@@ -1,13 +1,7 @@
 # Async Library - Parallel
 author: Tom Marshall
 
-levels:
-
-  - basic
-
-  - advanced
-
-  - medium
+levels: basic
 
 type: normal
 

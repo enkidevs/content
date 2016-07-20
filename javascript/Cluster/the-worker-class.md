@@ -1,13 +1,7 @@
 # The Worker Class
 author: Tom Marshall
 
-levels:
-
-  - basic
-
-  - advanced
-
-  - medium
+levels: foobaryo
 
 type: normal
 

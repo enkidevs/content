@@ -34,7 +34,7 @@ links:
 ---
 ## Content
 
-The **context manager** type is Python's way of working with unmanaged resources (e.g. file streams/ databases).
+The **context manager** type is Python's way of working with unmanaged resources (e.g. file streams/ databases). aiuwdhaiwudh
 
  As a result, the `with` keyword is used to ensure resources are **cleaned up** when they are not used any more.
 

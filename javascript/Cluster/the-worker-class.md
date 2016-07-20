@@ -11,7 +11,7 @@ levels:
 
 type: normal
 
-category: tip
+category: hack
 
 tags: []
 

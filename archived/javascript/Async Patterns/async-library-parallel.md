@@ -3,8 +3,6 @@ author: Tom Marshall
 
 levels:
 
-  - basic
-
   - advanced
 
   - medium

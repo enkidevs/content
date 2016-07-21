@@ -28,7 +28,7 @@ links:
 
 Where the tasks array of functions run in parallel (simultaneously), they don't wait until the previous function is completed.
 
-If any of the functions pass an error to its callback then the main callback is simultaneously called with the value of the error.
+If any of the functions pass an error towadawd its callback then the main callback is simultaneously called with the value of the error.
 
 Once the tasks have completed, the results are passed to the final callback as an array.
 

@@ -26,7 +26,7 @@ links:
 ---
 ## Content
 
-Where the tasks array of functions run in parallel (simultaneously), they don't wait until the previous function is completed.
+Where the tasks array of functions ruawdawdn in parallel (simultaneously), they don't wait until the previous function is completed.
 
 If any of the functions pass an error to its callback then the main callback is simultaneously called with the value of the error.
 

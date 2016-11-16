@@ -1,5 +1,57 @@
 import yaml from 'js-yaml'
 
+// http://stackoverflow.com/questions/8498592/extract-root-domain-name-from-string
+function getDomainFromURL (url) {
+  if (url) {
+    let domain
+    // find & remove protocol (http, ftp, etc.) and get domain
+    if (url.indexOf('://') > -1) {
+      domain = url.split('/')[2]
+    } else {
+      domain = url.split('/')[0]
+    }
+
+    // find & remove port number
+    domain = domain.split(':')[0]
+
+    return domain
+  }
+  return null
+}
+
+// https://github.com/chjj/marked/blob/master/lib/marked.js#L455 (slightly hacked with {type})
+const mdUrlRegEx = /\[(.*)\]\((.*)\)/
+const mdUrlRegExWithType = /\[(.*)\]\((.*)\)\{(.*)\}/
+
+function getMarkdownLink (link) {
+  let result
+  if (mdUrlRegExWithType.test(link)) {
+    result = mdUrlRegExWithType.exec(link)
+    return {name: result[1], url: result[2], nature: result[3]}
+  }
+  if (mdUrlRegEx.test(link)) {
+    result = mdUrlRegEx.exec(link)
+    return {name: result[1], url: result[2]}
+  }
+  console.log('not found', mdUrlRegExWithType.test(link))
+  return {
+    nature: 'website',
+    name: getDomainFromURL(link),
+    url: link
+  }
+}
+
+function toMarkdownLink (link) {
+  let text = link.url
+  if (link.name) {
+    text = `[${link.name}](${text})`
+  }
+  if (link.nature) {
+    text += `{${link.nature}}`
+  }
+  return text
+}
+
 export function parse (string = '') {
   const sections = string.split('---')
 
@@ -11,6 +63,10 @@ export function parse (string = '') {
   const yamlString = props.join('\n').replace(/^\s+|\s+$/g, '')
 
   const attributes = yaml.safeLoad(yamlString) || {}
+
+  if (attributes.links) {
+    attributes.links = attributes.links.map(getMarkdownLink)
+  }
 
   let content
   let gameContent
@@ -34,6 +90,10 @@ export function parse (string = '') {
 
 export function generate (insight) {
   const {headline, content, practiceQuestion, reviseQuestion, gameContent, ...attributes} = insight
+
+  if (attributes.links) {
+    attributes.links = attributes.links.map(toMarkdownLink)
+  }
 
   return `# ${headline}\n` +
     yaml.safeDump(attributes, {skipInvalid: true, newline: '\n\n'}) +

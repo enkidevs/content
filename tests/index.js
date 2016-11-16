@@ -26,9 +26,11 @@ const insight = {
   inAlgoPool: false,
   links: [{
     nature: 'website',
+    name: 'name',
     url: 'url'
   }, {
     nature: 'website',
+    name: 'name',
     url: 'url'
   }]
 }

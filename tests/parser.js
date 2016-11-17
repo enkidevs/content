@@ -72,6 +72,7 @@ export function parse (string = '') {
   let gameContent
   let practiceQuestion
   let reviseQuestion
+  let footnotes
 
   sections.slice(1).forEach(section => {
     if (section.indexOf('\n## Content\n\n') === 0) {
@@ -82,14 +83,16 @@ export function parse (string = '') {
       reviseQuestion = section.replace(/^\n##\sRevision\n\n/, '').trim()
     } else if (section.indexOf('\n## Game Content\n\n') === 0) {
       gameContent = section.replace(/^\n##\sGame\sContent\n\n/, '').trim()
+    } else if (section.indexOf('\n## Footnotes\n\n') === 0) {
+      footnotes = section.replace(/^\n##\sFootnotes\n\n/, '').trim()
     }
   })
 
-  return {...attributes, headline, content, practiceQuestion, reviseQuestion, gameContent}
+  return {...attributes, headline, content, practiceQuestion, reviseQuestion, gameContent, footnotes}
 }
 
 export function generate (insight) {
-  const {headline, content, practiceQuestion, reviseQuestion, gameContent, ...attributes} = insight
+  const {headline, content, practiceQuestion, reviseQuestion, gameContent, footnotes, ...attributes} = insight
 
   if (attributes.links) {
     attributes.links = attributes.links.map(toMarkdownLink)
@@ -100,5 +103,6 @@ export function generate (insight) {
     '\n---\n## Content\n\n' + (content || '').trim() +
     (gameContent ? ('\n\n---\n## Game Content\n\n' + gameContent.trim()) : '') +
     (practiceQuestion ? ('\n\n---\n## Practice\n\n' + practiceQuestion.trim()) : '') +
-    (reviseQuestion ? ('\n\n---\n## Revision\n\n' + reviseQuestion.trim()) : '')
+    (reviseQuestion ? ('\n\n---\n## Revision\n\n' + reviseQuestion.trim()) : '') +
+    (footnotes ? ('\n\n---\n## Footnotes\n\n' + footnotes.trim()) : '')
 }

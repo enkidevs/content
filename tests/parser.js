@@ -31,7 +31,7 @@ function getMarkdownLink (link) {
   }
   if (mdUrlRegEx.test(link)) {
     result = mdUrlRegEx.exec(link)
-    return {name: result[1], url: result[2]}
+    return {name: result[1], url: result[2], nature: 'website'}
   }
   console.log('not found', mdUrlRegExWithType.test(link))
   return {
@@ -46,16 +46,16 @@ function toMarkdownLink (link) {
   if (link.name) {
     text = `[${link.name}](${text})`
   }
-  if (link.nature) {
+  if (link.nature && link.nature !== 'website') {
     text += `{${link.nature}}`
   }
   return text
 }
 
 export function parse (string = '') {
-  const sections = string.split('---')
+  let sections = string.split('---')
 
-  const meta = sections[0]
+  const meta = sections.shift()
 
   let [headline, ...props] = meta.split('\n')
   headline = headline.replace(/^#\s/, '')
@@ -77,7 +77,7 @@ export function parse (string = '') {
   }
   let last
 
-  sections.slice(1).forEach(section => {
+  sections.forEach(section => {
     if (section.indexOf('\n## Content\n\n') === 0) {
       last = 'content'
       parsed[last] = section.replace(/^\n##\sContent\n\n/, '')
@@ -94,7 +94,7 @@ export function parse (string = '') {
       last = 'footnotes'
       parsed[last] = section.replace(/^\n##\sFootnotes\n\n/, '')
     } else {
-      parsed[last] += '---' + section.trimRight()
+      parsed[last] += '---' + section
     }
   })
 

@@ -14,6 +14,8 @@ const insight = {
   \`\`\`
   block code
   \`\`\`
+  ---
+  separator
   `.trim(),
   footnotes: 'no idea what is should look like',
   gameContent: 'game content',
@@ -37,5 +39,7 @@ const insight = {
 
 ava.test('generate and then parsing should return the original', t => {
   const parsedInsight = parse(generate(insight))
-  return t.deepEqual(parsedInsight, insight)
+  Object.keys(insight).forEach(k => {
+    t.deepEqual(insight[k], parsedInsight[k], 'failing key ' + k)
+  })
 })

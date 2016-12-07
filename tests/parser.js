@@ -68,27 +68,43 @@ export function parse (string = '') {
     attributes.links = attributes.links.map(getMarkdownLink)
   }
 
-  let content
-  let gameContent
-  let practiceQuestion
-  let reviseQuestion
-  let footnotes
+  const parsed = {
+    content: undefined,
+    gameContent: undefined,
+    practiceQuestion: undefined,
+    reviseQuestion: undefined,
+    footnotes: undefined
+  }
+  let last
 
   sections.slice(1).forEach(section => {
     if (section.indexOf('\n## Content\n\n') === 0) {
-      content = section.replace(/^\n##\sContent\n\n/, '').trim()
+      last = 'content'
+      parsed[last] = section.replace(/^\n##\sContent\n\n/, '')
     } else if (section.indexOf('\n## Practice\n\n') === 0) {
-      practiceQuestion = section.replace(/^\n##\sPractice\n\n/, '').trim()
+      last = 'practiceQuestion'
+      parsed[last] = section.replace(/^\n##\sPractice\n\n/, '')
     } else if (section.indexOf('\n## Revision\n\n') === 0) {
-      reviseQuestion = section.replace(/^\n##\sRevision\n\n/, '').trim()
+      last = 'reviseQuestion'
+      parsed[last] = section.replace(/^\n##\sRevision\n\n/, '')
     } else if (section.indexOf('\n## Game Content\n\n') === 0) {
-      gameContent = section.replace(/^\n##\sGame\sContent\n\n/, '').trim()
+      last = 'gameContent'
+      parsed[last] = section.replace(/^\n##\sGame\sContent\n\n/, '')
     } else if (section.indexOf('\n## Footnotes\n\n') === 0) {
-      footnotes = section.replace(/^\n##\sFootnotes\n\n/, '').trim()
+      last = 'footnotes'
+      parsed[last] = section.replace(/^\n##\sFootnotes\n\n/, '')
+    } else {
+      parsed[last] += '---' + section.trimRight()
     }
   })
 
-  return {...attributes, headline, content, practiceQuestion, reviseQuestion, gameContent, footnotes}
+  Object.keys(parsed).forEach(k => {
+    if (parsed[k]) {
+      parsed[k] = parsed[k].trim()
+    }
+  })
+
+  return {...attributes, headline, ...parsed}
 }
 
 export function generate (insight) {

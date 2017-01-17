@@ -1,4 +1,7 @@
+import path from 'path'
 import yaml from 'js-yaml'
+
+export const ARCHIVED_FOLDER = '.archived'
 
 // http://stackoverflow.com/questions/8498592/extract-root-domain-name-from-string
 function getDomainFromURL (url) {
@@ -121,4 +124,31 @@ export function generate (insight) {
     (practiceQuestion ? ('\n\n---\n## Practice\n\n' + practiceQuestion.trim()) : '') +
     (reviseQuestion ? ('\n\n---\n## Revision\n\n' + reviseQuestion.trim()) : '') +
     (footnotes ? ('\n\n---\n## Footnotes\n\n' + footnotes.trim()) : '')
+}
+
+export function encodePath (_path = '') {
+  return _path.replace(/#/g, 'sharp')
+}
+
+export function decodePath (_path = '') {
+  return _path.replace(/sharp/g, '#')
+}
+
+export function extractNames (filename = '', team) {
+  let subtopicName = filename.split(path.sep)
+  const slug = subtopicName.pop().split('.md')[0]
+  const archived = subtopicName[0] === ARCHIVED_FOLDER
+  if (archived) {
+    subtopicName.shift() // remove .archived from the array
+  }
+  const topicName = (team ? (team._id.toString() + '-') : '') +
+    decodePath(subtopicName.shift())
+  subtopicName = decodePath(subtopicName.join(path.sep))
+
+  return {
+    archived,
+    subtopicName,
+    topicName,
+    slug
+  }
 }

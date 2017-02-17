@@ -1,6 +1,6 @@
 {
   "name": "enki-content",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "parser of enki insights",
   "main": "dist/index.js",
   "files": [
@@ -8,6 +8,7 @@
     "dist/pathUtils.js",
     "dist/constants.js",
     "dist/parser.js",
+    "dist/questionParser.js",
     "dist/rules/"
   ],
   "scripts": {

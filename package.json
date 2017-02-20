@@ -1,6 +1,6 @@
 {
   "name": "enki-content",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "parser of enki insights",
   "main": "dist/index.js",
   "files": [
@@ -9,12 +9,12 @@
     "dist/constants.js",
     "dist/parser.js",
     "dist/questionParser.js",
-    "dist/rules/"
+    "rules/"
   ],
   "scripts": {
     "lint": "eslint tests",
     "clean": "rm -rf dist",
-    "build": "babel tests --out-dir dist",
+    "build": "babel tests --out-dir dist && mv dist/rules rules",
     "test": "npm run lint && ava",
     "prepublish": "npm run clean && npm run build"
   },

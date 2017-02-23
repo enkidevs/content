@@ -1,6 +1,6 @@
 # build artefacts
-dist
-rules
+/dist
+/rules
 
 # npm
 node_modules

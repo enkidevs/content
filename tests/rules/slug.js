@@ -8,7 +8,7 @@ export default function (file, {db, rawFile, team, status}) {
   const previous = rawFile.previous_filename || (status === 'modified' && rawFile.filename) || '' // eslint-disable-line camelcase
   const {slug: previousSlug} = extractNames(previous, team)
   if (!previousSlug || previousSlug !== slug) {
-    return db.Insight.findOne({slug}, '_id').lean().then(i => !i)
+    return db.insight.findOne({slug}, '_id').lean().then(i => !i)
   }
   return true
 }

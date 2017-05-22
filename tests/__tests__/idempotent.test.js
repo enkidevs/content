@@ -1,6 +1,7 @@
 import ava from 'ava'
 
-import {generate, parse} from '../parser'
+import {parse, astToInsight} from '../parser'
+import {generate} from '../generate'
 
 const insight = {
   author: 'Mathieu',
@@ -71,7 +72,7 @@ const md = "# This is the headline\nauthor: Mathieu\nlevels:\n  - basic\n  - med
 ava.test('generate and then parsing should return the original', t => {
   const generatedInsight = generate(insight)
   t.is(generatedInsight, md)
-  const parsedInsight = parse(generatedInsight)
+  const parsedInsight = astToInsight(parse(generatedInsight))
   Object.keys(insight).forEach(k => {
     t.deepEqual(insight[k], parsedInsight[k], 'failing key ' + k)
   })

@@ -17,13 +17,19 @@ export function extractNames (filename = '', team) {
     sections.shift() // remove .archived from the array
   }
 
+  if (sections.length !== 3) {
+    throw new Error('what\'s this file? Doesn\'t look like an insight')
+  }
+
   const topicName = (team ? (team._id.toString() + '-') : '') + decodePath(sections.shift())
-  const subtopicName = decodePath(sections.join('/'))
+  const subtopicName = decodePath(sections.shift())
+  const workoutName = decodePath(sections.shift())
 
   return {
     archived,
     subtopicName,
     topicName,
+    workoutName,
     slug
   }
 }

@@ -41,84 +41,257 @@ function getMarkdownLink (link) {
   }
 }
 
-function toMarkdownLink (link) {
-  let text = link.url
-  if (link.name) {
-    text = `[${link.name}](${text})`
+const HEADLINE_REGEX = /^#\s([a-z\s*]+)/i
+const SECTION_START_REGEX = /^-{3}/
+const SECTION_TITLE_REGEX = /^##\s([a-z\s*]+)/i
+const ATTRIBUTE_NAME_REGEX = /(^[a-z]+):/i
+const BLANK_LINE_REGEX = /^\s*$/
+
+const contentLinesToString = (contentArr) => contentArr.join('\n').trim()
+
+function createNode ({
+  lines,
+  name,
+  kind,
+  startLineNum,
+  startColNum = 0,
+  endLineNum,
+  endColNum = typeof endLineNum === 'number' && lines[endLineNum].length
+    ? lines[endLineNum].length - 1
+    : 0,
+  value = contentLinesToString(lines.slice(startLineNum, endLineNum + 1))
+}) {
+  return {
+    name,
+    kind,
+    value,
+    start: {
+      line: startLineNum,
+      column: startColNum
+    },
+    end: {
+      line: endLineNum,
+      column: endColNum
+    }
   }
-  if (link.nature && link.nature !== 'website') {
-    text += `{${link.nature}}`
+}
+
+function getContentBoundaries (lines, lineNumBeforeContent, contentSpecificEndCondition) {
+  let startLineNum
+
+  // skip trailing blank lines before the content
+  for (let i = lineNumBeforeContent + 1; i < lines.length; i++) {
+    const line = lines[i]
+
+    if (BLANK_LINE_REGEX.test(line)) {
+      continue
+    }
+
+    if (contentSpecificEndCondition(line)) {
+      break
+    }
+
+    // if we reach something that is not a blank line and
+    // not a content ending condition, it's the content start
+    startLineNum = i
+    break
   }
-  return text
+
+  // shortcircuit missing content
+  if (startLineNum === undefined) {
+    return {
+      contentLines: [],
+      startLineNum: lineNumBeforeContent,
+      endLineNum: lineNumBeforeContent
+    }
+  }
+
+  // content ends when it reaches the end of the file, or
+  // content specific end conditions
+  let endLineNum = startLineNum
+  for (let i = startLineNum; i < lines.length; i++) {
+    const line = lines[i]
+
+    if (BLANK_LINE_REGEX.test(lines[i])) {
+      continue
+    }
+
+    if (contentSpecificEndCondition(line)) {
+      break
+    }
+
+    // we only remember the last line that had non-blank content
+    endLineNum = i
+  }
+
+  return {
+    contentLines: lines.slice(startLineNum, endLineNum + 1),
+    startLineNum,
+    endLineNum
+  }
+}
+
+function skipBlankLines (lines, lineNum) {
+  while (lineNum < lines.length && BLANK_LINE_REGEX.test(lines[lineNum])) {
+    lineNum += 1
+  }
+  return lineNum
+}
+
+function parseHeadline (lines, lineNum) {
+  const headlineLineNum = skipBlankLines(lines, 0)
+  if (!HEADLINE_REGEX.test(lines[headlineLineNum])) {
+    throw new SyntaxError(`Invalid headline on line ${headlineLineNum}: ${lines[headlineLineNum]}`)
+  }
+
+  const [, headline] = lines[headlineLineNum].match(HEADLINE_REGEX)
+
+  return createNode({
+    lines,
+    name: 'headline',
+    kind: 'headline',
+    startLineNum: lineNum,
+    endLineNum: lineNum,
+    value: headline
+  })
+}
+
+function parseAttribute (lines, attrNameLineNum) {
+  const attrNameLine = lines[attrNameLineNum]
+  const [, name] = attrNameLine.match(ATTRIBUTE_NAME_REGEX)
+
+  const attrName = `${name}:`
+  const attrNameLineValue = attrNameLine.replace(ATTRIBUTE_NAME_REGEX, '')
+
+  const attributeEndConditions = (line) => {
+    return ATTRIBUTE_NAME_REGEX.test(line) || SECTION_START_REGEX.test(line)
+  }
+
+  let {
+    contentLines,
+    startLineNum,
+    endLineNum
+  } = getContentBoundaries(lines, attrNameLineNum, attributeEndConditions)
+
+  // if the first line contains the attribute value, include it
+  let startColNum
+  if (attrName.length < attrNameLine.length) {
+    startLineNum = attrNameLineNum
+    startColNum = attrNameLine.length - attrNameLineValue.trimLeft().length
+  } else {
+    startColNum = lines[startLineNum].length - lines[startLineNum].trimLeft().length
+  }
+
+  const yamlString = contentLinesToString([
+    attrName,
+    attrNameLineValue,
+    ...contentLines
+  ])
+  const parsedValue = yaml.safeLoad(yamlString) || {}
+
+  return createNode({
+    lines,
+    name,
+    kind: 'attribute',
+    startLineNum,
+    startColNum,
+    endLineNum,
+    value: name === 'links' && Array.isArray(parsedValue[name])
+      ? parsedValue[name].map(getMarkdownLink)
+      : parsedValue[name]
+  })
+}
+
+const sectionTitleToPropMap = new Map([
+  ['Content', 'content'],
+  ['Practice', 'practiceQuestion'],
+  ['Revision', 'reviseQuestion'],
+  ['Game Content', 'gameContent'],
+  ['Footnotes', 'footnotes']
+])
+
+function parseSection (lines, lineNum) {
+  const titleLineNum = skipBlankLines(lines, lineNum + 1) // + 1 to skip ---
+
+  if (!SECTION_TITLE_REGEX.test(lines[titleLineNum])) {
+    throw new SyntaxError(`Invalid section title on line ${titleLineNum}: ${lines[titleLineNum]}`)
+  }
+
+  const [, title] = lines[titleLineNum].match(SECTION_TITLE_REGEX)
+  const name = sectionTitleToPropMap.get(title)
+
+  const sectionEndCondition = (line) => {
+    return SECTION_START_REGEX.test(line)
+  }
+
+  const {
+    startLineNum,
+    endLineNum
+  } = getContentBoundaries(lines, titleLineNum, sectionEndCondition)
+
+  const nodeInfo = {
+    lines,
+    name,
+    kind: 'section',
+    startLineNum,
+    endLineNum
+  }
+
+  // empty section
+  if (startLineNum === titleLineNum) {
+    Object.assign(nodeInfo, {
+      endColNum: 0,
+      value: null
+    })
+  }
+
+  return createNode(nodeInfo)
 }
 
 export function parse (string = '') {
-  let sections = string.split('---')
+  // normalize linebreaks to \n.
+  string = string.replace(/\r\n?/g, '\n')
 
-  const meta = sections.shift()
-
-  let [headline, ...props] = meta.split('\n')
-  headline = headline.replace(/^#\s/, '')
-
-  const yamlString = props.join('\n').replace(/^\s+|\s+$/g, '')
-
-  const attributes = yaml.safeLoad(yamlString) || {}
-
-  if (attributes.links) {
-    attributes.links = attributes.links.map(getMarkdownLink)
+  const ast = {
+    kind: 'insight',
+    nodes: []
   }
 
-  const parsed = {
-    content: undefined,
-    gameContent: undefined,
-    practiceQuestion: undefined,
-    reviseQuestion: undefined,
-    footnotes: undefined
+  const lines = string.split(/\n/g)
+
+  const headlineNode = parseHeadline(lines, 0)
+  ast.nodes.push(headlineNode)
+
+  for (let i = headlineNode.end.line + 1; i < lines.length; i++) {
+    const line = lines[i]
+
+    if (BLANK_LINE_REGEX.test(line)) {
+      continue
+    }
+
+    if (SECTION_START_REGEX.test(line)) {
+      const node = parseSection(lines, i)
+      ast.nodes.push(node)
+      i = node.end.line
+      continue
+    }
+
+    if (ATTRIBUTE_NAME_REGEX.test(line)) {
+      const node = parseAttribute(lines, i)
+      ast.nodes.push(node)
+      i = node.end.line
+      continue
+    }
+
+    throw new SyntaxError(`Invalid token on line ${i}: ${line}`)
   }
-  let last
 
-  sections.forEach(section => {
-    if (section.indexOf('\n## Content\n\n') === 0) {
-      last = 'content'
-      parsed[last] = section.replace(/^\n##\sContent\n\n/, '')
-    } else if (section.indexOf('\n## Practice\n\n') === 0) {
-      last = 'practiceQuestion'
-      parsed[last] = section.replace(/^\n##\sPractice\n\n/, '')
-    } else if (section.indexOf('\n## Revision\n\n') === 0) {
-      last = 'reviseQuestion'
-      parsed[last] = section.replace(/^\n##\sRevision\n\n/, '')
-    } else if (section.indexOf('\n## Game Content\n\n') === 0) {
-      last = 'gameContent'
-      parsed[last] = section.replace(/^\n##\sGame\sContent\n\n/, '')
-    } else if (section.indexOf('\n## Footnotes\n\n') === 0) {
-      last = 'footnotes'
-      parsed[last] = section.replace(/^\n##\sFootnotes\n\n/, '')
-    } else {
-      parsed[last] += '---' + section
-    }
-  })
-
-  Object.keys(parsed).forEach(k => {
-    if (parsed[k]) {
-      parsed[k] = parsed[k].trim()
-    }
-  })
-
-  return {...attributes, headline, ...parsed}
+  return ast
 }
 
-export function generate (insight) {
-  const {headline, content, practiceQuestion, reviseQuestion, gameContent, footnotes, ...attributes} = insight
-
-  if (attributes.links) {
-    attributes.links = attributes.links.map(toMarkdownLink)
-  }
-
-  return `# ${headline}\n` +
-    yaml.safeDump(attributes, {skipInvalid: true, newline: '\n\n'}) +
-    '\n---\n## Content\n\n' + (content || '').trim() +
-    (gameContent ? ('\n\n---\n## Game Content\n\n' + gameContent.trim()) : '') +
-    (practiceQuestion ? ('\n\n---\n## Practice\n\n' + practiceQuestion.trim()) : '') +
-    (reviseQuestion ? ('\n\n---\n## Revision\n\n' + reviseQuestion.trim()) : '') +
-    (footnotes ? ('\n\n---\n## Footnotes\n\n' + footnotes.trim()) : '')
+export function astToInsight (ast) {
+  return ast.nodes.reduce((prev, n) => {
+    prev[n.name] = n.value
+    return prev
+  }, [])
 }

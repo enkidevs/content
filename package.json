@@ -1,6 +1,6 @@
 {
   "name": "enki-content",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "description": "parser of enki insights",
   "main": "dist/index.js",
   "files": [
@@ -50,7 +50,7 @@
   },
   "ava": {
     "files": [
-      "**/__tests__/*.js"
+      "**/__tests__/**/*.test.js"
     ],
     "require": [
       "babel-register"

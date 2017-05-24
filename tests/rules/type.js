@@ -12,7 +12,17 @@ const TYPES = [
   'tetris'
 ]
 
-export default function ({type}) {
+const WORKOUT_TYPES = [
+  'insights-list',
+  'game',
+  'quizz'
+]
+
+export default function ({data: {type}, type: fileType}) {
+  if (fileType === 'workout') {
+    return typeof type === 'string' && WORKOUT_TYPES.includes(type)
+  }
+  if (fileType !== 'insight') return true
   return typeof type === 'undefined' ||
          (typeof type === 'string' && TYPES.includes(type))
 }

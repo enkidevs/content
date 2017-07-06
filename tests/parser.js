@@ -293,5 +293,5 @@ export function astToInsight (ast) {
   return ast.nodes.reduce((prev, n) => {
     prev[n.name] = n.value
     return prev
-  }, [])
+  }, {})
 }

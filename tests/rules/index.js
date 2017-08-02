@@ -12,10 +12,10 @@ function ruleWrapper (fn) {
             if (val) {
               return resolve(val)
             }
-            reject({file: options.filename})
+            reject({file: file.filename})
           }).catch((err) => {
             console.log(err)
-            reject({file: options.filename, err})
+            reject({file: file.filename, err})
           })
           return
         }
@@ -23,9 +23,9 @@ function ruleWrapper (fn) {
         if (v) {
           return resolve(v)
         }
-        reject({file: options.filename})
+        reject({file: file.filename})
       } catch (err) {
-        reject({file: options.filename, err})
+        reject({file: file.filename, err})
       }
     })
   }

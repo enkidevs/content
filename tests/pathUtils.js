@@ -17,8 +17,8 @@ export function extractNames (filename = '', team) {
     sections.shift() // remove .archived from the array
   }
 
-  if (sections.length !== 3) {
-    throw new Error('what\'s this file? Doesn\'t look like an insight')
+  if (sections.length !== 3 && sections.length !== 2) {
+    throw new Error('what\'s this file? Doesn\'t look like an insight or a workout');
   }
 
   const topicName = (team ? (team._id.toString() + '-') : '') + decodePath(sections.shift())

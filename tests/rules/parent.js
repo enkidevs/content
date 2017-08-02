@@ -9,6 +9,7 @@ export default function ({data: {parent}, type}, {db, otherFiles, team}) {
   if (typeof parent === 'undefined') return true
   if (otherFiles && otherFiles.length) {
     if (otherFiles
+      .filter((f) => f.type === type)
       .map(({filename}) => extractNames(filename, team))
       .find(({slug, workoutName}) => (type === 'insight' ? slug : workoutName) === parent)) {
       return true

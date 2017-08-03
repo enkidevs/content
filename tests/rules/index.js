@@ -14,7 +14,6 @@ function ruleWrapper (fn) {
             }
             reject({file: file.filename})
           }).catch((err) => {
-            console.log(err)
             reject({file: file.filename, err})
           })
           return

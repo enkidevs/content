@@ -7,14 +7,14 @@ const ast = {
   nodes: [{
     name: 'headline',
     kind: 'headline',
-    value: 'This is the headline',
+    value: 'It\'s the headline',
     start: {
       line: 0,
       column: 0
     },
     end: {
       line: 0,
-      column: 21
+      column: 18
     }
   }, {
     name: 'author',

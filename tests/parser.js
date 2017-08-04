@@ -41,7 +41,7 @@ function getMarkdownLink (link) {
   }
 }
 
-const HEADLINE_REGEX = /^#\s([a-z\s*]+)/i
+const HEADLINE_REGEX = /^#\s([^\n]+)/i
 const SECTION_START_REGEX = /^-{3}/
 const SECTION_TITLE_REGEX = /^##\s([a-z\s*]+)/i
 const ATTRIBUTE_NAME_REGEX = /(^[a-z]+):/i

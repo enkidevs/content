@@ -13,7 +13,7 @@ export default function ({data: {insights}, type}, {db, otherFiles, team}) {
       .filter((f) => f.type === 'insight')
       .map(({filename}) => extractNames(filename, team))
       .forEach(({slug}) => {
-        if (insights.indexOf(slug) > 0) {
+        if (insights.indexOf(slug) >= 0) {
           found++
         }
       })

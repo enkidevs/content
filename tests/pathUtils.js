@@ -17,7 +17,7 @@ export function extractNames (filename = '', team) {
     sections.shift() // remove .archived from the array
   }
 
-  const topicName = (team ? (team._id.toString() + '-') : '') + decodePath(sections.shift())
+  const topicName = (team && sections[0] ? (team._id.toString() + '-') : '') + decodePath(sections.shift())
   const subtopicName = decodePath(sections.shift())
   const workoutName = decodePath(sections.shift())
 

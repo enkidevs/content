@@ -21,8 +21,8 @@ export function generate (insight) {
   return `# ${headline}\n` +
     yaml.safeDump(attributes, {skipInvalid: true, newline: '\n\n'}) +
     '\n---\n## Content\n\n' + (content || '').trim() +
-    (gameContent ? ('\n\n---\n## Game Content\n\n' + gameContent.trim()) : '') +
     (practiceQuestion ? ('\n\n---\n## Practice\n\n' + practiceQuestion.trim()) : '') +
     (reviseQuestion ? ('\n\n---\n## Revision\n\n' + reviseQuestion.trim()) : '') +
-    (footnotes ? ('\n\n---\n## Footnotes\n\n' + footnotes.trim()) : '')
+    (footnotes ? ('\n\n---\n## Footnotes\n\n' + footnotes.trim()) : '') +
+    (gameContent ? ('\n\n---\n## Game Content\n\n' + gameContent.trim()) : '')
 }

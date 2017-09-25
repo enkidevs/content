@@ -1,6 +1,6 @@
 {
   "name": "enki-content",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "parser of enki insights",
   "main": "dist/index.js",
   "files": [
@@ -18,6 +18,7 @@
     "clean": "rm -rf dist",
     "build": "babel tests --out-dir dist",
     "test": "npm run lint && ava",
+    "test:watch": "ava --watch",
     "prepublish": "npm run clean && npm run build"
   },
   "repository": {

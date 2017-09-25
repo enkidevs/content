@@ -65,11 +65,6 @@ kernel code
 As current Linux blocks are `1024` bytes, `vmstat` uses the same unit of measurement for memory.
 
 ---
-## Game Content
-
-game content
-
----
 ## Practice
 
 practice question

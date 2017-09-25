@@ -221,6 +221,9 @@ function parseSection (lines, lineNum) {
   const name = sectionTitleToPropMap.get(title)
 
   const sectionEndCondition = (line) => {
+    if (name === 'gameContent') {
+      return false
+    }
     return SECTION_START_REGEX.test(line)
   }
 

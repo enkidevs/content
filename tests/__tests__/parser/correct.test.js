@@ -183,27 +183,15 @@ As current Linux blocks are \`1024\` bytes, \`vmstat\` uses the same unit of mea
       column: 95
     }
   }, {
-    name: 'gameContent',
-    kind: 'section',
-    value: 'game content',
-    start: {
-      line: 62,
-      column: 0
-    },
-    end: {
-      line: 62,
-      column: 11
-    }
-  }, {
     name: 'practiceQuestion',
     kind: 'section',
     value: 'practice question',
     start: {
-      line: 67,
+      line: 62,
       column: 0
     },
     end: {
-      line: 67,
+      line: 62,
       column: 16
     }
   }, {
@@ -211,11 +199,11 @@ As current Linux blocks are \`1024\` bytes, \`vmstat\` uses the same unit of mea
     kind: 'section',
     value: 'revision question',
     start: {
-      line: 72,
+      line: 67,
       column: 0
     },
     end: {
-      line: 72,
+      line: 67,
       column: 16
     }
   }, {
@@ -223,12 +211,24 @@ As current Linux blocks are \`1024\` bytes, \`vmstat\` uses the same unit of mea
     kind: 'section',
     value: 'no idea what is should look like',
     start: {
+      line: 72,
+      column: 0
+    },
+    end: {
+      line: 72,
+      column: 31
+    }
+  }, {
+    name: 'gameContent',
+    kind: 'section',
+    value: 'game content',
+    start: {
       line: 77,
       column: 0
     },
     end: {
       line: 77,
-      column: 31
+      column: 11
     }
   }]
 }

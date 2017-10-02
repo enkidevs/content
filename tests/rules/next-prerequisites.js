@@ -1,5 +1,5 @@
 export const context = 'next-prerequisites'
-export const description = 'Topic and Course of course next and prereq fields must exist'
+export const description = 'topic-course for course\'s next and prerequisites must exist.'
 
 export default function ({data: {next, prerequisites}, type}, {db}) {
   if (type !== 'subtopic') return true

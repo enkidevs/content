@@ -9,7 +9,6 @@ export default function ({data: { quiz }, type}) {
   if (typeof quiz === 'undefined') return true
   try {
     const parsedQuiz = yaml.safeLoad(quiz)
-    console.log(parsedQuiz)
     if (!parsedQuiz.headline || !parsedQuiz.question || (parsedQuiz.answers || []).length < 4) return false
   } catch (e) {
     return false

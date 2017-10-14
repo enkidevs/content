@@ -1,7 +1,7 @@
 import yaml from 'js-yaml'
 
 export const context = 'quiz'
-export const description = 'Insight quiz include title, question and answers in YAML format'
+export const description = 'Insight quiz include headline, question and answers in YAML format'
 // TODO: add link to guidelines once they are updated
 
 export default function ({data: { quiz }, type}) {

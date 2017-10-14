@@ -10,7 +10,7 @@ export default function ({data: { quiz }, type}) {
   try {
     const parsedQuiz = yaml.safeLoad(quiz)
     console.log(parsedQuiz)
-    if (!parsedQuiz.title || !parsedQuiz.question || (parsedQuiz.answers || []).length < 4) return false
+    if (!parsedQuiz.headline || !parsedQuiz.question || (parsedQuiz.answers || []).length < 4) return false
   } catch (e) {
     return false
   }

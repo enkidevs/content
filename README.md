@@ -1,6 +1,11 @@
-# Enki Insight parser
+# Enki Content
 
-### See [Parser](https://github.com/enkidevs/content/blob/master/parser.md)
+This repo contains the [parser](https://github.com/enkidevs/content/blob/master/tests/parser.js) and the [rules](https://github.com/enkidevs/content/tree/master/tests/rules) for Enki's [open source content](https://github.com/sagelabs/content).
+
+## Details
+
+- [Parser](https://github.com/enkidevs/content/tree/master/tests/#parser)
+- [Rules](https://github.com/enkidevs/content/tree/master/tests/rules#rules)
 
 ### Installing
 ```

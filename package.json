@@ -1,6 +1,6 @@
 {
   "name": "enki-content",
-  "version": "0.3.9",
+  "version": "0.4.0",
   "description": "parser of enki insights",
   "main": "dist/index.js",
   "files": [
@@ -19,8 +19,11 @@
     "build": "babel tests --out-dir dist",
     "test": "npm run lint && ava",
     "test:watch": "ava --watch",
-    "prepublish": "npm run clean && npm run build"
+    "prepublish": "npm run test && npm run clean && npm run build"
   },
+  "pre-commit": [
+    "test"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/enkidevs/content.git"
@@ -43,6 +46,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-promise": "^3.4.2",
     "eslint-plugin-standard": "^2.0.1",
+    "pre-commit": "^1.2.2",
     "sinon": "^1.17.4",
     "sinon-as-promised": "^4.0.0"
   },

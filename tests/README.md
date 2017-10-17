@@ -1,4 +1,4 @@
-# Enki Content Parser
+# Parser
 
 The parser returns an AST containing line and column location for each insight item.
 

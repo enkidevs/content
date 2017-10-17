@@ -219,15 +219,27 @@ As current Linux blocks are \`1024\` bytes, \`vmstat\` uses the same unit of mea
       column: 31
     }
   }, {
-    name: 'gameContent',
+    name: 'quiz',
     kind: 'section',
-    value: 'game content',
+    value: 'quiz content',
     start: {
       line: 77,
       column: 0
     },
     end: {
       line: 77,
+      column: 11
+    }
+  }, {
+    name: 'gameContent',
+    kind: 'section',
+    value: 'game content',
+    start: {
+      line: 82,
+      column: 0
+    },
+    end: {
+      line: 82,
       column: 11
     }
   }]
@@ -244,4 +256,3 @@ ava.test('parsing should return the proper AST', t => {
     t.deepEqual(node, parsedAST.nodes[i], 'failing node ' + node.name)
   })
 })
-

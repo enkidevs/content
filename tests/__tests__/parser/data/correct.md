@@ -12,6 +12,7 @@ tags:
 parent: slug-of-the-parent
 notes: whatever
 inAlgoPool: false
+stub: false
 links:
   - '[name](url)'
   - '[name](url){forum}'

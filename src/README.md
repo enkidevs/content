@@ -12,7 +12,7 @@ A node in the AST is in the following format:
 {
   name: 'author',
   kind: 'attribute',
-  value: 'Charlie Parker',
+  value: 'speedy-gonzales',
   start: {
     line: 1,
     column: 8
@@ -46,7 +46,7 @@ AST sample:
   }, {
     name: 'author',
     kind: 'attribute',
-    value: 'Dizzy Gillespie',
+    value: 'marvin-the-martian',
     start: {
       line: 1,
       column: 8
@@ -211,7 +211,7 @@ And the following section starts on line 24:
 24| This is the content
 ```
 
-The [`astToInsight`](https://github.com/enkidevs/content/blob/master/tests/parser.js#L295) method converts the AST to a structure more suitable for the [Enki infrastructure](https://enkidevs.github.io/guidelines/Insights-guidelines.html).
+The [`astToInsight`](https://github.com/enkidevs/content/blob/master/tests/parser.js#L295) method converts the AST to an [Enki Insight](https://enkidevs.github.io/guidelines/Insights-guidelines.html).
 
 For example, this tree:
 
@@ -233,7 +233,7 @@ For example, this tree:
   }, {
     name: 'author',
     kind: 'attribute',
-    value: 'Dizzy Gillespie',
+    value: 'pepe-le-pew',
     start: {
       line: 1,
       column: 8
@@ -307,7 +307,7 @@ Would be converted to:
 ```js
 {
   headline: "This is the headline",
-  author: "Dizzy Gillespie",
+  author: "pepe-le-pew",
   levels: [
     "basic",
     "medium"

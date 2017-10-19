@@ -1,0 +1,44 @@
+{
+  "kind": "insight",
+  "nodes": [
+    {
+      "name": "headline",
+      "kind": "headline",
+      "value": "This is the headline",
+      "start": {
+        "line": 0,
+        "column": 0
+      },
+      "end": {
+        "line": 0,
+        "column": 21
+      }
+    },
+    {
+      "name": "author",
+      "kind": "attribute",
+      "value": null,
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 1,
+        "column": 6
+      }
+    },
+    {
+      "name": "content",
+      "kind": "section",
+      "value": null,
+      "start": {
+        "line": 3,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 0
+      }
+    }
+  ]
+}

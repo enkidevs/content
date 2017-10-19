@@ -1,5 +1,5 @@
-# It's the headline
-author: Mathieu
+# This is the headline
+author: daffy-duck
 levels:
   - basic
   - medium
@@ -12,8 +12,15 @@ tags:
 parent: slug-of-the-parent
 notes: whatever
 inAlgoPool: false
+
+
 links:
+
+
   - '[name](url)'
+
+
+
   - '[name](url){forum}'
 
 ---
@@ -67,17 +74,28 @@ practice question
 
 revision question
 
+
+
+
+
+
 ---
+
+
+
+
+
 ## Footnotes
 
-no idea what is should look like
 
----
-## Quiz
 
-quiz content
 
----
-## Game Content
 
-game content
+
+
+[1:a] stuff for a [2:b] stuff for b
+
+
+
+
+

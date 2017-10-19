@@ -1,5 +1,5 @@
 # This is the headline
-author: Mathieu
+author: bugs-bunny
 levels:
   - basic
   - medium
@@ -12,15 +12,9 @@ tags:
 parent: slug-of-the-parent
 notes: whatever
 inAlgoPool: false
-
-
+stub: false
 links:
-
-
   - '[name](url)'
-
-
-
   - '[name](url){forum}'
 
 ---
@@ -74,28 +68,17 @@ practice question
 
 revision question
 
+---
+## Quiz
 
-
-
-
+quiz content
 
 ---
-
-
-
-
-
 ## Footnotes
 
+[1:a] stuff for a [2:b] stuff for b
 
+---
+## Game Content
 
-
-
-
-
-no idea what is should look like
-
-
-
-
-
+game content

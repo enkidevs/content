@@ -3,16 +3,6 @@
   "version": "0.5.3",
   "description": "parser of enki insights",
   "main": "dist/index.js",
-  "files": [
-    "dist/index.js",
-    "dist/pathUtils.js",
-    "dist/constants.js",
-    "dist/parser.js",
-    "dist/questionParser.js",
-    "dist/generate.js",
-    "dist/rules/",
-    "rules.js"
-  ],
   "scripts": {
     "lint": "eslint src",
     "clean": "rm -rf dist",

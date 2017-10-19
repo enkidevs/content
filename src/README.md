@@ -2,7 +2,7 @@
 
 The parser returns an AST containing line and column location for each insight item.
 
-[Code](https://github.com/enkidevs/content/blob/master/tests/parser.js)
+[Code](https://github.com/enkidevs/content/blob/master/src/parser.js)
 
 ## Format
 
@@ -211,7 +211,7 @@ And the following section starts on line 24:
 24| This is the content
 ```
 
-The [`astToInsight`](https://github.com/enkidevs/content/blob/master/tests/parser.js#L295) method converts the AST to an [Enki Insight](https://enkidevs.github.io/guidelines/Insights-guidelines.html).
+The [`astToInsight`](https://github.com/enkidevs/content/blob/master/src/parser.js#L295) method converts the AST to an [Enki Insight](https://enkidevs.github.io/guidelines/Insights-guidelines.html).
 
 For example, this tree:
 

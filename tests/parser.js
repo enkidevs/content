@@ -207,7 +207,8 @@ const sectionTitleToPropMap = new Map([
   ['Practice', 'practiceQuestion'],
   ['Revision', 'reviseQuestion'],
   ['Game Content', 'gameContent'],
-  ['Footnotes', 'footnotes']
+  ['Footnotes', 'footnotes'],
+  ['Quiz', 'quiz']
 ])
 
 function parseSection (lines, lineNum) {

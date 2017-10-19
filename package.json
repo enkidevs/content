@@ -1,6 +1,6 @@
 {
   "name": "enki-content",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "parser of enki insights",
   "main": "dist/index.js",
   "files": [
@@ -14,16 +14,14 @@
     "rules.js"
   ],
   "scripts": {
-    "lint": "eslint tests",
+    "lint": "eslint src",
     "clean": "rm -rf dist",
-    "build": "babel tests --out-dir dist",
-    "test": "npm run lint && ava",
-    "test:watch": "ava --watch",
+    "build": "babel src --out-dir dist --ignore __tests__",
+    "test": "npm run lint && jest --notify",
+    "test:watch": "jest --watchAll",
     "prepublish": "npm run test && npm run clean && npm run build"
   },
-  "pre-commit": [
-    "test"
-  ],
+  "pre-commit": ["test"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/enkidevs/content.git"
@@ -34,7 +32,6 @@
   },
   "homepage": "https://github.com/enkidevs/content#readme",
   "devDependencies": {
-    "ava": "^0.18.1",
     "babel-cli": "^6.9.0",
     "babel-core": "^6.9.0",
     "babel-eslint": "^7.1.1",
@@ -46,20 +43,14 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-promise": "^3.4.2",
     "eslint-plugin-standard": "^2.0.1",
-    "pre-commit": "^1.2.2",
-    "sinon": "^1.17.4",
-    "sinon-as-promised": "^4.0.0"
+    "jest": "^21.2.1",
+    "pre-commit": "^1.2.2"
   },
   "dependencies": {
     "js-yaml": "^3.6.1",
     "lodash.isequal": "^4.5.0"
   },
-  "ava": {
-    "files": [
-      "**/__tests__/**/*.test.js"
-    ],
-    "require": [
-      "babel-register"
-    ]
+  "jest": {
+    "testRegex": "/src/__tests__/.*\\.test.js$"
   }
 }

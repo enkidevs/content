@@ -1,4 +1,5 @@
 import yaml from 'js-yaml'
+import { sectionTitleToPropMap } from './utils'
 
 // http://stackoverflow.com/questions/8498592/extract-root-domain-name-from-string
 function getDomainFromURL (url) {
@@ -76,7 +77,9 @@ function createNode ({
   }
 }
 
-function getContentBoundaries (lines, lineNumBeforeContent, contentSpecificEndCondition) {
+// every node ends when it reaches a new line or EOF
+// or if the provided specific end condition function returns `true`
+function getContentBoundaries (lines, lineNumBeforeContent, contentSpecificEndCondition = () => false) {
   let startLineNum
 
   // skip trailing blank lines before the content
@@ -202,15 +205,6 @@ function parseAttribute (lines, attrNameLineNum) {
   })
 }
 
-const sectionTitleToPropMap = new Map([
-  ['Content', 'content'],
-  ['Practice', 'practiceQuestion'],
-  ['Revision', 'reviseQuestion'],
-  ['Game Content', 'gameContent'],
-  ['Footnotes', 'footnotes'],
-  ['Quiz', 'quiz']
-])
-
 function parseSection (lines, lineNum) {
   const titleLineNum = skipBlankLines(lines, lineNum + 1) // + 1 to skip ---
 
@@ -221,12 +215,9 @@ function parseSection (lines, lineNum) {
   const [, title] = lines[titleLineNum].match(SECTION_TITLE_REGEX)
   const name = sectionTitleToPropMap.get(title)
 
-  const sectionEndCondition = (line) => {
-    if (name === 'gameContent') {
-      return false
-    }
-    return SECTION_START_REGEX.test(line)
-  }
+  const sectionEndCondition = name === 'gameContent'
+    ? undefined // game content only ends on a new-line or EOF (it contains multiple --- parts)
+    : (line) => SECTION_START_REGEX.test(line)
 
   const {
     startLineNum,
@@ -254,7 +245,7 @@ function parseSection (lines, lineNum) {
 
 export function parse (string = '') {
   // normalize linebreaks to \n.
-  string = string.replace(/\r\n?/g, '\n')
+  string = string.replace(/\r?\n|\r/g, '\n')
 
   const ast = {
     kind: 'insight',

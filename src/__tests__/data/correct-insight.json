@@ -1,0 +1,37 @@
+{
+  "author": "bugs-bunny",
+  "levels": [
+    "basic",
+    "medium"
+  ],
+  "type": "normal",
+  "headline": "This is the headline",
+  "content": "`vmstat` allows the user to monitor virtual\nmemory statistics such as processes, memory,\npaging, block IO, traps , disks and cpu\nactivity.\n\nThe user can specify a sampling period.\n\n```bash\n$ vmstat 1\nprocs -----------memory----------\n  r  b   swpd   free   buff  cache\n  4  0 920708  74004  36324 114148\n  ---swap-------io---- -system--\n    si   so    bi    bo   in   cs\n    29   53   125   112  298  212\n    ----cpu----\n  us sy id wa\n  26  6 65  3\n```\n\nThe above will run `vmstat` every second and\ndisplay system virtual memory usage such\nas:\n- `r` number process waiting to run\n- `b`\nblocked process\n- `swpd` virtual memory used\n-\n`free` idle memory\n-  `bi`, `bo` number of\nblocks sent and received from disk\n- `us`\ntime spent in user code\n- `sy` time spent in\nkernel code\n\nAs current Linux blocks are `1024` bytes, `vmstat` uses the same unit of measurement for memory.",
+  "footnotes": "[1:a] stuff for a [2:b] stuff for b",
+  "gameContent": "game content",
+  "practiceQuestion": "practice question",
+  "reviseQuestion": "revision question",
+  "quiz": "quiz content",
+  "category": "tip",
+  "tags": [
+    "list",
+    "of",
+    "tags"
+  ],
+  "parent": "slug-of-the-parent",
+  "notes": "whatever",
+  "inAlgoPool": false,
+  "stub": false,
+  "links": [
+    {
+      "nature": "website",
+      "name": "name",
+      "url": "url"
+    },
+    {
+      "nature": "forum",
+      "name": "name",
+      "url": "url"
+    }
+  ]
+}

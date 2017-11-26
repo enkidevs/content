@@ -1,13 +1,14 @@
 import { TYPES, NAMES, parseMarkdownLines } from '../utils'
 import createNode from '../create-node'
 
-export default function parseContent (lines, startLineNum, endLineNum) {
+export default function parseQuestion (lines, startLineNum, endLineNum) {
   return createNode({
     lines,
-    name: NAMES.CONTENT,
+    name: NAMES.FOOTNOTES,
     type: TYPES.SECTION,
     startLineNum,
     endLineNum,
-    nodes: parseMarkdownLines(lines, startLineNum, endLineNum).children
+    nodes: parseMarkdownLines(lines, startLineNum, endLineNum).children[0]
+      .children
   })
 }

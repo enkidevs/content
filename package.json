@@ -41,8 +41,7 @@
   "dependencies": {
     "js-yaml": "^3.6.1",
     "lodash.isequal": "^4.5.0",
-    "remark": "^8.0.0",
-    "traverse": "^0.6.6"
+    "remark": "^8.0.0"
   },
   "jest": {
     "testRegex": "/src/__tests__/.*\\.test.js$"

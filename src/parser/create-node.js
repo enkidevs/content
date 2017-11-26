@@ -2,7 +2,6 @@ export default function createNode ({
   lines,
   name,
   type,
-  value,
   startLineNum,
   startColNum = 0,
   endLineNum,
@@ -15,7 +14,6 @@ export default function createNode ({
     ...nodeSpecifics,
     name,
     type,
-    value,
     position: {
       start: {
         line: startLineNum,

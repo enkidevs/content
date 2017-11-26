@@ -1,20 +1,32 @@
-import yaml from 'js-yaml'
-import { getMarkdownLink } from '../utils';
+import parseAttribute from '../attribute'
+import { NAMES, TYPES, BLANK_LINE_REGEX, ATTRIBUTE_NAME_REGEX } from '../utils'
+import createNode from '../create-node'
 
 export default function parseQuiz (lines, startLineNum, endLineNum) {
-  const data = yaml.safeLoad(lines.slice(startLineNum, endLineNum + 1))
-  const nodes = Object.keys(data).map(name => (
-    createNode({
-      lines,
-      name,
-      type: TYPES.ATTRIBUTE,
-      startLineNum,
-      startColNum,
-      endLineNum,
-      content:
-        name === 'links' && Array.isArray(data[name])
-          ? data[name].map(getMarkdownLink)
-          : data[name]
-    })
-  );
+  const nodes = []
+  for (let i = startLineNum; i <= endLineNum; i++) {
+    const line = lines[i]
+
+    if (BLANK_LINE_REGEX.test(line)) {
+      continue
+    }
+
+    if (ATTRIBUTE_NAME_REGEX.test(line)) {
+      const node = parseAttribute(lines, i)
+      nodes.push(node)
+      i = node.position.end.line
+      continue
+    }
+
+    throw new SyntaxError(`Invalid token on line ${i}: ${line}`)
+  }
+
+  return createNode({
+    lines,
+    name: NAMES.QUIZ,
+    type: TYPES.SECTION,
+    startLineNum,
+    endLineNum,
+    nodes
+  })
 }

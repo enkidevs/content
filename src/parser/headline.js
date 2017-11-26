@@ -1,4 +1,4 @@
-import { HEADLINE_REGEX, skipBlankLines, TYPES } from './utils'
+import { HEADLINE_REGEX, skipBlankLines, TYPES, NAMES } from './utils'
 import createNode from './create-node'
 
 export default function parseHeadline (lines, lineNum) {
@@ -13,10 +13,10 @@ export default function parseHeadline (lines, lineNum) {
 
   return createNode({
     lines,
-    name: 'headline',
+    name: NAMES.HEADLINE,
     type: TYPES.HEADLINE,
     startLineNum: lineNum,
     endLineNum: lineNum,
-    content: headline
+    value: headline
   })
 }

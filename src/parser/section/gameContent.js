@@ -1,10 +1,10 @@
 import { TYPES, NAMES, parseMarkdownLines } from '../utils'
 import createNode from '../create-node'
 
-export default function parseContent (lines, startLineNum, endLineNum) {
+export default function parseGameContent (lines, startLineNum, endLineNum) {
   return createNode({
     lines,
-    name: NAMES.CONTENT,
+    name: NAMES.GAME_CONTENT,
     type: TYPES.SECTION,
     startLineNum,
     endLineNum,

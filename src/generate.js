@@ -1,5 +1,5 @@
 import yaml from 'js-yaml'
-import { sectionPropToTitleMap, orderedSectionProps } from './utils'
+import { sectionNameToTitleMap, orderedSectionNames } from './utils'
 
 function toMarkdownLink (link) {
   let text = link.url
@@ -14,9 +14,7 @@ function toMarkdownLink (link) {
 
 function generateSection ({ title, content }) {
   const cleanContent = content.trim()
-  return content
-    ? (`---\n## ${title}\n\n` + cleanContent)
-    : ''
+  return content ? `---\n## ${title}\n\n` + cleanContent : ''
 }
 
 export function generate (insight) {
@@ -27,24 +25,22 @@ export function generate (insight) {
   }
 
   // extract section title and content, in the proper order
-  const sections = orderedSectionProps.map(sectionProp => ({
-    title: sectionPropToTitleMap.get(sectionProp),
-    content: insight[sectionProp]
+  const sections = orderedSectionNames.map(sectionName => ({
+    title: sectionNameToTitleMap.get(sectionName),
+    content: insight[sectionName]
   }))
 
   // attributes are all properties left when we extract
   // the headline and the sections
-  const attributes = Object
-    .keys(insight)
-    .filter(prop => prop !== 'headline' && !sectionPropToTitleMap.has(prop))
-    .reduce((obj, attrProp) => {
-      obj[attrProp] = insight[attrProp]
+  const attributes = Object.keys(insight)
+    .filter(prop => prop !== 'headline' && !sectionNameToTitleMap.has(prop))
+    .reduce((obj, attrName) => {
+      obj[attrName] = insight[attrName]
       return obj
     }, {})
 
-  return (
-`# ${insight.headline}
-${yaml.safeDump(attributes, {skipInvalid: true, newline: '\n\n'})}
+  return `# ${insight.headline}
+${yaml.safeDump(attributes, { skipInvalid: true, newline: '\n\n' })}
 ${sections.map(generateSection).join('\n\n')}
-`)
+`
 }

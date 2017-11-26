@@ -1,7 +1,18 @@
+import remark from 'remark'
+import { sectionNameToTitleMap } from '../utils'
+
 export const TYPES = {
   HEADLINE: 'headline',
   SECTION: 'section',
   ATTRIBUTE: 'attribute'
+}
+
+export const NAMES = {
+  HEADLINE: 'headline',
+  ...[...sectionNameToTitleMap.keys()].reduce((hash, key) => {
+    hash[key.toUpperCase()] = key
+    return hash
+  }, {})
 }
 
 // http://stackoverflow.com/questions/8498592/extract-root-domain-name-from-string
@@ -46,6 +57,9 @@ export function getMarkdownLink (link) {
 }
 
 export const contentLinesToString = contentArr => contentArr.join('\n').trim()
+
+export const parseMarkdownLines = (lines, start, end) =>
+  remark.parse(contentLinesToString(lines.slice(start, end + 1)))
 
 export const HEADLINE_REGEX = /^#\s([^\n]+)/i
 export const SECTION_START_REGEX = /^-{3}/

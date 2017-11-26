@@ -1,5 +1,9 @@
-import remark from 'remark'
+import { NAMES } from '../utils'
+import parseQuestion from './question'
 
 export default function parseReviseQuestion (lines, startLineNum, endLineNum) {
-  return remark.parse(lines.slice(startLineNum, endLineNum + 1)).children
+  return {
+    ...parseQuestion(lines, startLineNum, endLineNum),
+    name: NAMES.REVISEQUESTION
+  }
 }

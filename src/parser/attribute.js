@@ -50,7 +50,7 @@ export default function parseAttribute (lines, attrNameLineNum) {
     startLineNum,
     startColNum,
     endLineNum,
-    content:
+    value:
       name === 'links' && Array.isArray(parsedValue[name])
         ? parsedValue[name].map(getMarkdownLink)
         : parsedValue[name]

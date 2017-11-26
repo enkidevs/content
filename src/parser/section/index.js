@@ -6,11 +6,11 @@ import {
   TYPES
 } from '../utils'
 import createNode from '../create-node'
-import { sectionTitleToPropMap } from '../../utils'
+import { sectionTitleToNameMap } from '../../utils'
 
-const sectionParsers = [...sectionTitleToPropMap.values()].reduce(
+const sectionParsers = [...sectionTitleToNameMap.values()].reduce(
   (map, name) => {
-    map.set(name, require(`./${name}`))
+    map.set(name, require(`./${name}`).default)
     return map
   },
   new Map()
@@ -26,7 +26,7 @@ export default function parseSection (lines, lineNum) {
   }
 
   const [, title] = lines[titleLineNum].match(SECTION_TITLE_REGEX)
-  const name = sectionTitleToPropMap.get(title)
+  const name = sectionTitleToNameMap.get(title)
 
   const sectionEndCondition =
     name === 'gameContent'

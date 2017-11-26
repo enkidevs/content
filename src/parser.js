@@ -1,6 +1,11 @@
 import yaml from 'js-yaml'
 import { sectionTitleToPropMap } from './utils'
 
+const KINDS = {
+  SECTION: 'section',
+  ATTRIBUTE: 'attribute'
+}
+
 // http://stackoverflow.com/questions/8498592/extract-root-domain-name-from-string
 function getDomainFromURL (url) {
   if (url) {
@@ -28,11 +33,11 @@ function getMarkdownLink (link) {
   let result
   if (mdUrlRegExWithType.test(link)) {
     result = mdUrlRegExWithType.exec(link)
-    return {name: result[1], url: result[2], nature: result[3]}
+    return { name: result[1], url: result[2], nature: result[3] }
   }
   if (mdUrlRegEx.test(link)) {
     result = mdUrlRegEx.exec(link)
-    return {name: result[1], url: result[2], nature: 'website'}
+    return { name: result[1], url: result[2], nature: 'website' }
   }
   console.log('not found', mdUrlRegExWithType.test(link))
   return {
@@ -48,7 +53,7 @@ const SECTION_TITLE_REGEX = /^##\s([a-z\s*]+)/i
 const ATTRIBUTE_NAME_REGEX = /(^[a-z]+):/i
 const BLANK_LINE_REGEX = /^\s*$/
 
-const contentLinesToString = (contentArr) => contentArr.join('\n').trim()
+const contentLinesToString = contentArr => contentArr.join('\n').trim()
 
 function createNode ({
   lines,
@@ -79,7 +84,11 @@ function createNode ({
 
 // every node ends when it reaches a new line or EOF
 // or if the provided specific end condition function returns `true`
-function getContentBoundaries (lines, lineNumBeforeContent, contentSpecificEndCondition = () => false) {
+function getContentBoundaries (
+  lines,
+  lineNumBeforeContent,
+  contentSpecificEndCondition = () => false
+) {
   let startLineNum
 
   // skip trailing blank lines before the content
@@ -144,7 +153,9 @@ function skipBlankLines (lines, lineNum) {
 function parseHeadline (lines, lineNum) {
   const headlineLineNum = skipBlankLines(lines, 0)
   if (!HEADLINE_REGEX.test(lines[headlineLineNum])) {
-    throw new SyntaxError(`Invalid headline on line ${headlineLineNum}: ${lines[headlineLineNum]}`)
+    throw new SyntaxError(
+      `Invalid headline on line ${headlineLineNum}: ${lines[headlineLineNum]}`
+    )
   }
 
   const [, headline] = lines[headlineLineNum].match(HEADLINE_REGEX)
@@ -166,15 +177,15 @@ function parseAttribute (lines, attrNameLineNum) {
   const attrName = `${name}:`
   const attrNameLineValue = attrNameLine.replace(ATTRIBUTE_NAME_REGEX, '')
 
-  const attributeEndConditions = (line) => {
+  const attributeEndConditions = line => {
     return ATTRIBUTE_NAME_REGEX.test(line) || SECTION_START_REGEX.test(line)
   }
 
-  let {
-    contentLines,
-    startLineNum,
-    endLineNum
-  } = getContentBoundaries(lines, attrNameLineNum, attributeEndConditions)
+  let { contentLines, startLineNum, endLineNum } = getContentBoundaries(
+    lines,
+    attrNameLineNum,
+    attributeEndConditions
+  )
 
   // if the first line contains the attribute value, include it
   let startColNum
@@ -182,7 +193,8 @@ function parseAttribute (lines, attrNameLineNum) {
     startLineNum = attrNameLineNum
     startColNum = attrNameLine.length - attrNameLineValue.trimLeft().length
   } else {
-    startColNum = lines[startLineNum].length - lines[startLineNum].trimLeft().length
+    startColNum =
+      lines[startLineNum].length - lines[startLineNum].trimLeft().length
   }
 
   const yamlString = contentLinesToString([
@@ -195,13 +207,14 @@ function parseAttribute (lines, attrNameLineNum) {
   return createNode({
     lines,
     name,
-    kind: 'attribute',
+    kind: KINDS.ATTRIBUTE,
     startLineNum,
     startColNum,
     endLineNum,
-    value: name === 'links' && Array.isArray(parsedValue[name])
-      ? parsedValue[name].map(getMarkdownLink)
-      : parsedValue[name]
+    value:
+      name === 'links' && Array.isArray(parsedValue[name])
+        ? parsedValue[name].map(getMarkdownLink)
+        : parsedValue[name]
   })
 }
 
@@ -209,27 +222,32 @@ function parseSection (lines, lineNum) {
   const titleLineNum = skipBlankLines(lines, lineNum + 1) // + 1 to skip ---
 
   if (!SECTION_TITLE_REGEX.test(lines[titleLineNum])) {
-    throw new SyntaxError(`Invalid section title on line ${titleLineNum}: ${lines[titleLineNum]}`)
+    throw new SyntaxError(
+      `Invalid section title on line ${titleLineNum}: ${lines[titleLineNum]}`
+    )
   }
 
   const [, title] = lines[titleLineNum].match(SECTION_TITLE_REGEX)
   const name = sectionTitleToPropMap.get(title)
 
-  const sectionEndCondition = name === 'gameContent'
-    ? undefined // game content only ends on a new-line or EOF (it contains multiple --- parts)
-    : (line) => SECTION_START_REGEX.test(line)
+  const sectionEndCondition =
+    name === 'gameContent'
+      ? undefined // game content only ends on a new-line or EOF (it contains multiple --- parts)
+      : line => SECTION_START_REGEX.test(line)
 
-  const {
-    startLineNum,
-    endLineNum
-  } = getContentBoundaries(lines, titleLineNum, sectionEndCondition)
+  const { startLineNum, endLineNum } = getContentBoundaries(
+    lines,
+    titleLineNum,
+    sectionEndCondition
+  )
 
   const nodeInfo = {
     lines,
     name,
-    kind: 'section',
+    kind: KINDS.SECTION,
     startLineNum,
-    endLineNum
+    endLineNum,
+    nodes: []
   }
 
   // empty section
@@ -264,15 +282,15 @@ export function parse (string = '') {
       continue
     }
 
-    if (SECTION_START_REGEX.test(line)) {
-      const node = parseSection(lines, i)
+    if (ATTRIBUTE_NAME_REGEX.test(line)) {
+      const node = parseAttribute(lines, i)
       ast.nodes.push(node)
       i = node.end.line
       continue
     }
 
-    if (ATTRIBUTE_NAME_REGEX.test(line)) {
-      const node = parseAttribute(lines, i)
+    if (SECTION_START_REGEX.test(line)) {
+      const node = parseSection(lines, i)
       ast.nodes.push(node)
       i = node.end.line
       continue

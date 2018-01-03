@@ -1,7 +1,7 @@
 import { extractNames } from '../pathUtils'
 
 export const context = 'insights'
-export const description = 'Insights must exist in database'
+export const description = 'Workout insights must exist in database.'
 
 export default function ({data: {insights}, type}, {db, otherFiles, team}) {
   if (type !== 'workout') return true
@@ -21,6 +21,7 @@ export default function ({data: {insights}, type}, {db, otherFiles, team}) {
   if (found >= insights.length) {
     return true
   }
+  console.log(db)
   return db.insight.count({slug: {$in: insights}}).then((res) => {
     return res + found >= insights.length
   })

@@ -1,5 +1,5 @@
 export const context = 'type'
-export const description = 'type'
+export const description = 'Insight and workout types must exist.'
 export const link = 'https://enkidevs.github.io/guidelines/Insights-guidelines.html#type-m'
 
 const TYPES = [

@@ -1,7 +1,7 @@
 import isEqual from 'lodash.isequal'
 
 export const context = 'footnotes'
-export const description = 'footnotes'
+export const description = 'Footnotes should follow canonic syntax.'
 export const link = 'https://enkidevs.github.io/guidelines/Insights-guidelines.html#footnotes'
 
 export default function ({data: {content, footnotes}, type}) {

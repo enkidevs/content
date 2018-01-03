@@ -1,7 +1,7 @@
 import { extractNames } from '../pathUtils'
 
 export const context = 'game'
-export const description = 'Workout game must exit in database.'
+export const description = 'Workout game must exit in database or as new files.'
 
 export default function ({data: {game}, type}, {db, otherFiles, team}) {
   if (type !== 'workout') return true

@@ -1,5 +1,5 @@
 export const context = 'next-prerequisites'
-export const description = 'topic-course for course\'s next and prerequisites must exist.'
+export const description = 'next and prereq should follow topic-course slug syntax.'
 
 export default function ({data: {next, prerequisites}, type}, {db}) {
   if (type !== 'subtopic') return true

@@ -21,7 +21,6 @@ export default function ({data: {insights}, type}, {db, otherFiles, team}) {
   if (found >= insights.length) {
     return true
   }
-  console.log(db)
   return db.insight.count({slug: {$in: insights}}).then((res) => {
     return res + found >= insights.length
   })

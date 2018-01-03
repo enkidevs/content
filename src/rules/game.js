@@ -11,7 +11,7 @@ export default function ({data: {game}, type}, {db, otherFiles, team}) {
     found = otherFiles
       .filter((f) => f.type === 'insight')
       .map(({filename}) => extractNames(filename, team))
-      .find(fileSlug => fileSlug === game)
+      .some(fileSlug => fileSlug === game)
   }
   return found || db.insight.count({slug: game})
 }

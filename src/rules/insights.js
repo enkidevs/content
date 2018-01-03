@@ -1,7 +1,7 @@
 import { extractNames } from '../pathUtils'
 
 export const context = 'insights'
-export const description = 'Insights must exist in database'
+export const description = 'Workout insights must exist in database or as new files.'
 
 export default function ({data: {insights}, type}, {db, otherFiles, team}) {
   if (type !== 'workout') return true

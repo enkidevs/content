@@ -1,5 +1,5 @@
 export const context = 'category'
-export const description = 'category'
+export const description = 'Insight category should exist in database.'
 export const link = 'https://enkidevs.github.io/guidelines/Insights-guidelines.html#category-m'
 
 export default function ({data: {category}, type}, {db}) {

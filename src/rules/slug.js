@@ -1,7 +1,7 @@
 import { extractNames } from '../pathUtils'
 
 export const context = 'slug'
-export const description = 'Slug shouldn\'t already exist'
+export const description = 'Slug shouldn\'t already exist in database.'
 
 export default function ({filename, previous_filename, status, type}, {db, team}) {
   if (type !== 'insight') return true

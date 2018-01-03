@@ -1,7 +1,7 @@
 import questionParser from '../questionParser'
 
 export const context = 'practice-question'
-export const description = 'practice-question'
+export const description = 'Practice question should follow canonic syntax.'
 export const link = 'https://enkidevs.github.io/guidelines/Insights-guidelines.html#practice-question'
 
 export default function ({data: {practiceQuestion}, type}) {

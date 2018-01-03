@@ -1,7 +1,7 @@
 import { extractNames } from '../pathUtils'
 
 export const context = 'parent'
-export const description = 'Parent must exist in database'
+export const description = 'Parent workout must exist in database'
 export const link = 'https://enkidevs.github.io/guidelines/Insights-guidelines.html#parent'
 
 export default function ({data: {parent}, type}, {db, otherFiles, team}) {

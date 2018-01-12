@@ -1,4 +1,4 @@
-export const orderedSectionProps = [
+export const orderedSectionNames = [
   'content',
   'practiceQuestion',
   'reviseQuestion',
@@ -7,7 +7,7 @@ export const orderedSectionProps = [
   'gameContent'
 ]
 
-export const sectionPropToTitleMap = new Map([
+export const sectionNameToTitleMap = new Map([
   ['content', 'Content'],
   ['practiceQuestion', 'Practice'],
   ['reviseQuestion', 'Revision'],
@@ -16,8 +16,7 @@ export const sectionPropToTitleMap = new Map([
   ['gameContent', 'Game Content']
 ])
 
-export const sectionTitleToPropMap = orderedSectionProps
-  .reduce((map, prop) => {
-    map.set(sectionPropToTitleMap.get(prop), prop)
-    return map
-  }, new Map())
+export const sectionTitleToNameMap = orderedSectionNames.reduce((map, prop) => {
+  map.set(sectionNameToTitleMap.get(prop), prop)
+  return map
+}, new Map())
